@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <title>Grid Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/grid.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/profile.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="page-header">
+        <h1>Welcome <strong data-bind="text: email"></strong>!</h1>
+        <p class="lead">Please see below for all those who have come before you.</p>
+      </div>
+
+      <h3>Three equal columns</h3>
+      <p>Get three equal-width columns <strong>starting at desktops and scaling to large desktops</strong>. On mobile devices, tablets and below, the columns will automatically stack.</p>
+      <div class="row">
+        <div class="col-md-4">
+
+        <% if is_admin %>
+        	<form class="form-brag" action="/profile" method="post">
+		        <h2 class="form-brag-heading">Bragging rights time</h2>
+		        <label for="inputName" class="sr-only">Name</label>
+		        <input type="text" name="name[full_name]" id="name[full_name]" class="form-control" placeholder="Your name" required autofocus>
+		        
+		        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+		      </form>
+		    <% end %>
+
+
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+        		Row 1
+
+        </div>
+        <div class="col-md-4">
+          <% @names.each do |name| %>
+            Name: <%= name.full_name %><br />
+          <% end %>
+        </div>
+        <div class="col-md-4">.col-md-4</div>
+      </div>
+
+
+    </div> <!-- /container -->
+
+    <!-- For Bootstrap -->
+    <script src="/dist/js/jquery.min.js"></script>
+
+    <!-- For Bootstrap -->
+    <script src="/dist/js/bootstrap.min.js"></script>
+
+    <!-- For Knockout -->
+    <script src="/dist/js/knockout-3.3.0.js"></script>
+
+    <!-- For data bindings -->
+    <script src="/js/wof.js"></script>
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+---
+- hosts: all
+  vars:
+    db_user: app_user  # Hardcoded in settings.py
+    db_password: password  # Hardcoded in settings.py
+    db_name: wof
+    test_db_name: test_wof
+    db_port: 5432
+    project_dir: /vagrant
+    postgresql_listen_addr: 127.0.0.1
+
+  tasks:
+
+    # Install and configure the Postgres
+    - apt_key: url=http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc state=present
+    - apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present
+
+    - name: ensure apt cache is up to date
+      action: apt update_cache=yes
+
+    - name: postgresql - regen locales
+      command: /usr/sbin/locale-gen en_US.UTF-8
+
+    - name: set locale
+      command: /usr/sbin/update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+
+    - name: ensure packages are installed
+      action: apt name={{item}}
+      with_items:
+          - postgresql-9.3
+          - postgresql-server-dev-9.3
+          - libpq-dev
+          - python-psycopg2
+          - bundler
+          - firefox
+          - phantomjs
+          
+      environment:
+          LANG: en_US.UTF-8
+          LC_ALL: en_US.UTF-8
+
+    - name: ensure user has access to databases
+      sudo_user: postgres
+      postgresql_user:
+                name={{ db_user }}
+                password={{ db_password }}
+                role_attr_flags=CREATEDB,SUPERUSER
+
+    - name: install postgresql db
+      sudo_user: postgres
+      postgresql_db:
+                name={{ db_name }}
+                encoding='UTF-8'
+                lc_collate='en_US.UTF-8'
+                lc_ctype='en_US.UTF-8'
+
+      register: createdb_status
+
+    - name: install postgresql test db
+      sudo_user: postgres
+      postgresql_db:
+                name={{ test_db_name }}
+                owner={{ db_user }}
+                encoding='UTF-8'
+                lc_collate='en_US.UTF-8'
+                lc_ctype='en_US.UTF-8'
+
+    - lineinfile: dest=/etc/environment line=PG_USER={{ db_user }}
+    - lineinfile: dest=/etc/environment line=PG_PASS={{ db_password }}
+    
+    - name: Install Bundler
+      command: bash -lc "gem install bundler"
+
+    - name: Install Gems
+      command: bash -lc "cd /vagrant; bundle install"
