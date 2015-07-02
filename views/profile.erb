@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
-    <title>Grid Template for Bootstrap</title>
+    <title>TWA Demo OWASP Top 10 Web App</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,41 +35,39 @@
     <div class="container">
 
       <div class="page-header">
-        <h1>Welcome <strong data-bind="text: email"></strong>!</h1>
+        <h1>Welcome <strong data-bind="text: email"></strong>! (<a href="/logout">Logout</a>)</h1>
         <p class="lead">Please see below for all those who have come before you.</p>
       </div>
 
-      <h3>Three equal columns</h3>
-      <p>Get three equal-width columns <strong>starting at desktops and scaling to large desktops</strong>. On mobile devices, tablets and below, the columns will automatically stack.</p>
-      <div class="row">
-        <div class="col-md-4">
+      <% if is_admin %>
+        <h3>Congrats, you are an admin user.</h3>
+        <div class="row">
+          <div class="col-md-4">
 
-        <% if is_admin %>
-        	<form class="form-brag" action="/profile" method="post">
-		        <h2 class="form-brag-heading">Bragging rights time</h2>
-		        <label for="inputName" class="sr-only">Name</label>
-		        <input type="text" name="name[full_name]" id="name[full_name]" class="form-control" placeholder="Your name" required autofocus>
-		        
-		        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-		      </form>
-		    <% end %>
+            <form class="form-brag" action="/profile" method="post">
+              <label for="inputName">Name</label>
+              <input type="text" name="name[full_name]" id="name[full_name]" class="form-control" placeholder="John Doe" required autofocus>
+              <label for="inputTwitter">Twitter Handle</label>
+              <input type="text" name="name[twitter]" id="name[twitter]" class="form-control" placeholder="zephell" required autofocus>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+            </form>
 
-
-        </div>
-
-      </div>
-
-      <div class="row">
-        <div class="col-md-4">
-        		Row 1
+          </div>
 
         </div>
-        <div class="col-md-4">
+      <% else %>
+        <h3>Hint: You are <i>not</i> an admin user.</h3>
+      <% end %>
+
+      <div class="row">
+        <div class="col-md-12">
           <% @names.each do |name| %>
-            Name: <%= name.full_name %><br />
+            <span class="twitter-row">
+               <%= name.full_name %> (<a href="https://twitter.com/<%= name.twitter %>/">@<%= name.twitter %></a>) joined the Wall of Fame on <%= name.created_at.strftime("%F") %>
+            </span><br />
+            <br />
           <% end %>
         </div>
-        <div class="col-md-4">.col-md-4</div>
       </div>
 
 

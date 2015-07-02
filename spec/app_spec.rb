@@ -22,18 +22,22 @@ describe 'The WOF web app' do
 end
 
 describe 'Users API' do
-  it 'can get an admin user' do
-    get '/users/1/'
-    expect(last_response).to be_ok
-    json = JSON.parse(last_response.body)
-    expect(json['username']).to eq('pavlov')
+  let(:json) { JSON.parse(last_response.body) }
+
+  before { get route }
+
+  describe 'when user is admin' do
+    let(:route) { '/users/1/'}
+
+    it { expect(last_response).to be_ok }
+    it { expect(json['username']).to eq 'pavlov' }
   end
 
-  it 'can get a normal user' do
-    get '/users/2/'
-    expect(last_response).to be_ok
-    json = JSON.parse(last_response.body)
-    expect(json['username']).to eq('demo')
+  describe 'when user is normal' do
+    let(:route) { '/users/2/'}
+
+    it { expect(last_response).to be_ok }
+    it { expect(json['username']).to eq 'demo' }
   end
 end
 
