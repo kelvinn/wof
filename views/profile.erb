@@ -40,10 +40,9 @@
       </div>
 
       <% if is_admin %>
-        <h3>Congrats, you are an admin user.</h3>
+        
         <div class="row">
           <div class="col-md-4">
-
             <form class="form-brag" action="/profile" method="post">
               <label for="inputName">Name</label>
               <input type="text" name="name[full_name]" id="name[full_name]" class="form-control" placeholder="John Doe" required autofocus>
@@ -54,6 +53,9 @@
 
           </div>
 
+          <div class="col-md-8">
+            <img src="/img/redblue.jpg" />
+          </div>
         </div>
       <% else %>
         <h3>Hint: You are <i>not</i> an admin user.</h3>
